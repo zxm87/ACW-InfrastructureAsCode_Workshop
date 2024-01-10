@@ -7,6 +7,24 @@
     },
     "location": {
       "value": "eastus"
+    },
+    "uniqueIdentifier": {
+      "value": "20240110zxm"
+    },
+    "sqlServerName": {
+      "value": "ContactWebDBServer"
+    },
+    "sqlDatabaseName": {
+      "value": "ContactWebDB"
+    },
+    "sqlServerAdminLogin": {
+      "value": "contactwebdbuser"
+    },
+    "sqlServerAdminPassword": {
+      "value": "workshopDbPwd#54321!"
+    },
+    "clientIPAddress": {
+      "value": "98.100.40.118"
     }
   }
 }

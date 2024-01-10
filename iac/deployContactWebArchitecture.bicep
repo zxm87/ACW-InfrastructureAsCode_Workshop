@@ -10,6 +10,7 @@ param sqlServerAdminLogin string
 param sqlServerAdminPassword string
 param uniqueIdentifier string
 param logAnalyticsWorkspaceName string
+param appInsightsName string
 
 resource contactWebResourceGroup 'Microsoft.Resources/resourceGroups@2018-05-01' = {
   name: rgName
@@ -36,5 +37,15 @@ module contactWebAnalyticsWorkspace 'logAnalyticsWorkspace.bicep' = {
   params: {
     location: contactWebResourceGroup.location
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+  }
+}
+
+module contactWebApplicationInsights 'applicationInsights.bicep' = {
+  name: '${appInsightsName}-deployment'
+  scope: contactWebResourceGroup
+  params: {
+    location: contactWebResourceGroup.location
+    appInsightsName: appInsightsName
+    logAnalyticsWorkspaceId: contactWebAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
   }
 }

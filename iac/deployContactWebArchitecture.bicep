@@ -6,6 +6,7 @@ param clientIPAddress string
 param sqlServerName string
 param sqlDatabaseName string
 param sqlServerAdminLogin string
+@secure()
 param sqlServerAdminPassword string
 param uniqueIdentifier string
 

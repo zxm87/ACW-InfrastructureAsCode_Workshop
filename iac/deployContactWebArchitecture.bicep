@@ -9,6 +9,7 @@ param sqlServerAdminLogin string
 @secure()
 param sqlServerAdminPassword string
 param uniqueIdentifier string
+param logAnalyticsWorkspaceName string
 
 resource contactWebResourceGroup 'Microsoft.Resources/resourceGroups@2018-05-01' = {
   name: rgName
@@ -27,4 +28,13 @@ module sqlServer 'azureSQL.bicep' = {
     location: location
   }
   name: sqlServerName
+}
+
+module contactWebAnalyticsWorkspace 'logAnalyticsWorkspace.bicep' = {
+  name: '${logAnalyticsWorkspaceName}-deployment'
+  scope: contactWebResourceGroup
+  params: {
+    location: contactWebResourceGroup.location
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+  }
 }

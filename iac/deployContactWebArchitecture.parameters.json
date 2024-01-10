@@ -25,6 +25,9 @@
     },
     "clientIPAddress": {
       "value": "98.100.40.118"
+    },
+    "logAnalyticsWorkspaceName": {
+      "value": "contactWebAnalytics"
     }
   }
 }

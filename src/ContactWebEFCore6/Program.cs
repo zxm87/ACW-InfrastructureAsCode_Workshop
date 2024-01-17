@@ -21,21 +21,21 @@ builder.Services.AddDbContext<MyContactManagerDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 //TODO: Add this back in when you have a database connection to perform migrations on startup
-//var contextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
-//    .UseSqlServer(connectionString)
-//    .Options;
-//using (var context = new ApplicationDbContext(contextOptions))
-//{
-//    context.Database.Migrate();
-//}
+var contextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
+   .UseSqlServer(connectionString)
+   .Options;
+using (var context = new ApplicationDbContext(contextOptions))
+{
+   context.Database.Migrate();
+}
 
-//var contextOptions2 = new DbContextOptionsBuilder<MyContactManagerDbContext>()
-//    .UseSqlServer(mcmdContext)
-//    .Options;
-//using (var context = new MyContactManagerDbContext(contextOptions2))
-//{
-//    context.Database.Migrate();
-//}
+var contextOptions2 = new DbContextOptionsBuilder<MyContactManagerDbContext>()
+   .UseSqlServer(mcmdContext)
+   .Options;
+using (var context = new MyContactManagerDbContext(contextOptions2))
+{
+   context.Database.Migrate();
+}
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()

@@ -11,13 +11,20 @@ param sqlServerAdminPassword string
 param uniqueIdentifier string
 param logAnalyticsWorkspaceName string
 param appInsightsName string
+param webAppName string
+param appServicePlanName string
+param appServicePlanSku string
+param identityDBConnectionStringKey string
+param managerDBConnectionStringKey string
+param appInsightsConnectionStringKey string
+param keyVaultName string
 
 resource contactWebResourceGroup 'Microsoft.Resources/resourceGroups@2018-05-01' = {
   name: rgName
   location: location
 }
 
-module sqlServer 'azureSQL.bicep' = {
+module contactWebDatabase 'azureSQL.bicep' = {
   scope: contactWebResourceGroup
   params: {
     clientIPAddress: clientIPAddress
@@ -47,5 +54,35 @@ module contactWebApplicationInsights 'applicationInsights.bicep' = {
     location: contactWebResourceGroup.location
     appInsightsName: appInsightsName
     logAnalyticsWorkspaceId: contactWebAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
+  }
+}
+
+module contactWebApplicationPlanAndSite 'contactWebAppService.bicep' = {
+  name: '${webAppName}-deployment'
+  scope: contactWebResourceGroup
+  params: {
+    location: contactWebResourceGroup.location
+    uniqueIdentifier: uniqueIdentifier
+    appInsightsName: contactWebApplicationInsights.outputs.applicationInsightsName
+    appServicePlanName: appServicePlanName
+    appServicePlanSku: appServicePlanSku
+    webAppName: webAppName
+    identityDBConnectionStringKey: identityDBConnectionStringKey
+    managerDBConnectionStringKey: managerDBConnectionStringKey
+    appInsightsConnectionStringKey: appInsightsConnectionStringKey
+  }
+}
+
+module contactWebVault 'keyVault.bicep' = {
+  name: '${keyVaultName}-deployment'
+  scope: contactWebResourceGroup
+  params: {
+    location: contactWebResourceGroup.location
+    uniqueIdentifier: uniqueIdentifier
+    webAppFullName: contactWebApplicationPlanAndSite.outputs.webAppFullName
+    databaseServerName: contactWebDatabase.outputs.sqlServerName
+    keyVaultName: keyVaultName
+    sqlDatabaseName: sqlDatabaseName
+    sqlServerAdminPassword: sqlServerAdminPassword
   }
 }

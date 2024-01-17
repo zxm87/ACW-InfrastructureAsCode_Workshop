@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "eastus"
+    },
+    "uniqueIdentifier": {
+      "value": "20240110zxm"
+    },
+    "keyVaultName": {
+      "value": "KV-ContactWeb"
+    },
+    "databaseServerName": {
+      "value": "ContactWebDBServer20240110zxm"
+    },
+    "webAppName": {
+      "value": "ContactWeb-20240110zxm"
+    },
+    "sqlDatabaseName": {
+      "value": "ContactWebDB"
+    },
+    "sqlServerAdminPassword": {
+      "value": "workshopDbPwd#54321!"
+    }
+  }
+}

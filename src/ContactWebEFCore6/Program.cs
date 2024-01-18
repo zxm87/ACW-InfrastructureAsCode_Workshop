@@ -11,6 +11,28 @@ using Azure.Extensions.AspNetCore.Configuration.Secrets;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Use this section to add Azure App configuration and Key Vault integration
+
+builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+{
+    var settings = config.Build();
+    var env = settings["Application:Environment"];
+    if (env == null || !env.Trim().Equals("develop", StringComparison.OrdinalIgnoreCase))
+    {
+        var cred = new ManagedIdentityCredential();
+        config.AddAzureAppConfiguration(options =>
+                options.Connect(new Uri(settings["AzureAppConfigConnection"]), cred)
+                            .ConfigureKeyVault(kv => { kv.SetCredential(cred); }));
+    }
+    else
+    {
+        var cred = new DefaultAzureCredential();
+        config.AddAzureAppConfiguration(options =>
+            options.Connect(settings["AzureAppConfigConnection"])
+                   .ConfigureKeyVault(kv => kv.SetCredential(cred)));
+    }
+});
+
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -59,29 +81,6 @@ if (!string.IsNullOrWhiteSpace(keyVaultEndpoint))
         config.AddAzureKeyVault(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
     });
 } 
-*/
-
-// Use this section to add Azure App configuration and Key Vault integration
-/*
-builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
-{
-    var settings = config.Build();
-    var env = settings["Application:Environment"];
-    if (env == null || !env.Trim().Equals("develop", StringComparison.OrdinalIgnoreCase))
-    {
-        var cred = new ManagedIdentityCredential();
-        config.AddAzureAppConfiguration(options =>
-                options.Connect(new Uri(settings["AzureAppConfigConnection"]), cred)
-                            .ConfigureKeyVault(kv => { kv.SetCredential(cred); }));
-    }
-    else
-    {
-        var cred = new DefaultAzureCredential();
-        config.AddAzureAppConfiguration(options =>
-            options.Connect(settings["AzureAppConfigConnection"])
-                   .ConfigureKeyVault(kv => kv.SetCredential(cred)));
-    }
-});
 */
 
 var app = builder.Build();

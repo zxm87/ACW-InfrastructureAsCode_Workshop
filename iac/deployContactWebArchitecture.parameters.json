@@ -52,6 +52,12 @@
     },
     "keyVaultName": {
       "value": "KV-ContactWeb"
+    },
+    "developersGroupObjectId": {
+      "value": "71c029cb-8823-4ed3-9f11-d4569ad6fb24"
+    },
+    "keyVaultUserManagedIdentityName": {
+      "value": "GetSecretsOnlyIdentity"
     }
   }
 }

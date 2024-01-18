@@ -14,6 +14,9 @@ param sqlDatabaseName string
 @secure()
 param sqlServerAdminPassword string
 
+param developersGroupObjectId string
+param keyVaultUserManagedIdentityName string
+
 var vaultName = '${keyVaultName}${uniqueIdentifier}'
 var skuName = 'standard'
 var softDeleteRetentionInDays = 7
@@ -24,6 +27,11 @@ resource webApp 'Microsoft.Web/sites@2023-01-01' existing = {
 
 resource databaseServer 'Microsoft.Sql/servers@2023-05-01-preview' existing = {
   name: databaseServerName
+}
+
+resource keyVaultUser 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+  name: keyVaultUserManagedIdentityName
+  location: location
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
@@ -48,6 +56,24 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
           keys: []
           secrets: ['Get']
           certificates: []
+        }
+      }
+      {
+        tenantId: subscription().tenantId
+        objectId: keyVaultUser.properties.principalId
+        permissions: {
+          keys: []
+          secrets: ['Get']
+          certificates: []
+        }
+      }
+      {
+        tenantId: subscription().tenantId
+        objectId: developersGroupObjectId
+        permissions: {
+          keys: ['all']
+          secrets: ['all']
+          certificates: ['all']
         }
       }
     ]
@@ -77,3 +103,4 @@ resource contactManagerDBConnectionSecret 'Microsoft.KeyVault/vaults/secrets@202
 output keyVaultName string = keyVault.name
 output identityDBConnectionSecretURI string = identityDBConnectionSecret.properties.secretUri
 output managerDBConnectionSecretURI string = contactManagerDBConnectionSecret.properties.secretUri
+output keyVaultUserManagedIdentityName string = keyVaultUser.name

@@ -20,6 +20,13 @@ param appInsightsConnectionStringKey string
 param keyVaultName string
 param developersGroupObjectId string
 param keyVaultUserManagedIdentityName string
+@minLength(5)
+@maxLength(12)
+param appConfigStoreName string
+param appDataReaderRoleDefinitionName string
+param appDataReaderRoleId string
+param appConfigurationEndpointKey string
+
 var keyVaultUMIFullName = '${keyVaultName}-${keyVaultUserManagedIdentityName}'
 
 resource contactWebResourceGroup 'Microsoft.Resources/resourceGroups@2018-05-01' = {
@@ -101,5 +108,35 @@ module updateContactWebAppSettings 'contactWebAppServiceSettingsUpdate.bicep' = 
     managerDBSecretURI: contactWebVault.outputs.managerDBConnectionSecretURI
     identityDBConnectionStringKey: identityDBConnectionStringKey
     managerDBConnectionStringKey: managerDBConnectionStringKey
+  }
+}
+
+module orgAppConfiguration 'appConfigStore.bicep' = {
+  name: '${appConfigStoreName}-deployment'
+  scope: contactWebResourceGroup
+  params: {
+    location: contactWebResourceGroup.location
+    uniqueIdentifier: uniqueIdentifier
+    appConfigStoreName: appConfigStoreName
+    identityDBConnectionStringKey: identityDBConnectionStringKey
+    managerDBConnectionStringKey: managerDBConnectionStringKey
+    identityDbSecretURI: contactWebVault.outputs.identityDBConnectionSecretURI
+    managerDbSecretURI: contactWebVault.outputs.managerDBConnectionSecretURI
+    keyVaultUserManagedIdentityName: contactWebVault.outputs.keyVaultUserManagedIdentityName
+    webAppName: contactWebApplicationPlanAndSite.outputs.webAppFullName
+    roleDefinitionName: appDataReaderRoleDefinitionName
+    appDataReaderRoleId: appDataReaderRoleId
+  }
+}
+
+module resetContactWebAppSettingsForAppConfiguration 'contactWebAppServiceSettingsResetForAppConfiguration.bicep' = {
+  name: '${webAppName}-resettingAppSettingsForAppConfiguration'
+  scope: contactWebResourceGroup
+  params: {
+    webAppName: contactWebApplicationPlanAndSite.outputs.webAppFullName
+    appConfigurationEndpointKey: appConfigurationEndpointKey
+    appConfigurationEndpointValue: orgAppConfiguration.outputs.appConfigStoreEndpoint
+    applicationInsightsConnectionStringKey: appInsightsConnectionStringKey
+    applicationInsightsName: contactWebApplicationInsights.outputs.applicationInsightsName
   }
 }

@@ -58,6 +58,18 @@
     },
     "keyVaultUserManagedIdentityName": {
       "value": "GetSecretsOnlyIdentity"
+    },
+    "appConfigStoreName": {
+      "value": "orgAppConfig"
+    },
+    "appDataReaderRoleDefinitionName": {
+      "value": "App Configuration Data Reader"
+    },
+    "appDataReaderRoleId": {
+      "value": "/providers/Microsoft.Authorization/roleDefinitions/516239f1-63e1-4d78-a4de-a74fb236a071"
+    },
+    "appConfigurationEndpointKey": {
+      "value": "AzureAppConfigConnection"
     }
   }
 }

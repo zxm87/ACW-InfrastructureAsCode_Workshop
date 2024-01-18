@@ -2,8 +2,7 @@ name: Infrastructure and App Deployment
 
 on:
   push:
-    branches:
-      - main
+    branches: [nowayjose]
   workflow_dispatch:
 
 env:

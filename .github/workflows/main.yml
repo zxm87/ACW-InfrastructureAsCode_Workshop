@@ -10,8 +10,8 @@ env:
   AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
   AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   AZURE_CLIENT_ID_CONTACTWEB_DEV: "${{ secrets.AZURE_CLIENT_ID_CONTACTWEB_DEV }}"
-  TEMPLATE: "iac/deployContactWebArchitecture.bicep"
-  PARAMETERS: "iac/deployContactWebArchitecture.parameters.json"
+  TEMPLATE: "iac/bicep/deployContactWebArchitecture.bicep"
+  PARAMETERS: "iac/bicep/deployContactWebArchitecture.parameters.json"
   DEPLOYMENT_NAME: "BicepDeployResources"
   REGION: "eastus"
   APP_PACKAGE_PATH: "myapp"

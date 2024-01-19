@@ -44,6 +44,8 @@ module "keyvault" {
   sqlDatabaseName   = var.sqlDatabaseName
   uniqueIdentifier  = var.uniqueIdentifier
   keyVaultName      = var.keyVaultName
+  sqlServerFQDN     = module.sqlServer.sqlServerFQDN
+  sqlServerAdminLogin = module.sqlServer.sqlServerAdminLogin
 }
 
 module "appService" {

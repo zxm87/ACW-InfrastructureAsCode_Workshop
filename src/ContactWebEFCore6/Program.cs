@@ -13,25 +13,25 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Use this section to add Azure App configuration and Key Vault integration
 
-builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
-{
-    var settings = config.Build();
-    var env = settings["Application:Environment"];
-    if (env == null || !env.Trim().Equals("develop", StringComparison.OrdinalIgnoreCase))
-    {
-        var cred = new ManagedIdentityCredential();
-        config.AddAzureAppConfiguration(options =>
-                options.Connect(new Uri(settings["AzureAppConfigConnection"]), cred)
-                            .ConfigureKeyVault(kv => { kv.SetCredential(cred); }));
-    }
-    else
-    {
-        var cred = new DefaultAzureCredential();
-        config.AddAzureAppConfiguration(options =>
-            options.Connect(settings["AzureAppConfigConnection"])
-                   .ConfigureKeyVault(kv => kv.SetCredential(cred)));
-    }
-});
+// builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+// {
+//     var settings = config.Build();
+//     var env = settings["Application:Environment"];
+//     if (env == null || !env.Trim().Equals("develop", StringComparison.OrdinalIgnoreCase))
+//     {
+//         var cred = new ManagedIdentityCredential();
+//         config.AddAzureAppConfiguration(options =>
+//                 options.Connect(new Uri(settings["AzureAppConfigConnection"]), cred)
+//                             .ConfigureKeyVault(kv => { kv.SetCredential(cred); }));
+//     }
+//     else
+//     {
+//         var cred = new DefaultAzureCredential();
+//         config.AddAzureAppConfiguration(options =>
+//             options.Connect(settings["AzureAppConfigConnection"])
+//                    .ConfigureKeyVault(kv => kv.SetCredential(cred)));
+//     }
+// });
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -69,7 +69,7 @@ builder.Services.AddScoped<IStatesService, StatesService>();
 builder.Services.AddScoped<IContactsRepository, ContactsRepository>();
 builder.Services.AddScoped<IContactsService, ContactsService>();
 builder.Services.AddScoped<IUserRolesService, UserRolesService>();
-builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
 //just key vault
 /*

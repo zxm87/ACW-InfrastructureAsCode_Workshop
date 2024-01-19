@@ -8,6 +8,16 @@ variable "location" {
     nullable = false
 }
 
+variable "sqlServerFQDN" {
+    type     = string
+    nullable = false
+}
+
+variable "sqlServerAdminLogin" {
+    type     = string
+    nullable = false
+}
+
 variable "sqlServerName" {
     type     = string
     nullable = false

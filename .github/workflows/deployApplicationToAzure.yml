@@ -2,7 +2,7 @@ name: Build and deploy ContactWeb
 
 on:
   push:
-    branches: [nowayjose]
+    branches: [main]
   workflow_dispatch:
 
 env:
@@ -10,7 +10,7 @@ env:
   # set this to the dotnet version to use
   DOTNET_VERSION: "6.0.x"
   # Put your app name here
-  AZURE_WEB_APP_NAME: "ContactWeb-20240119zxm"
+  AZURE_WEB_APP_NAME: "ContactWeb-20240111zxm"
   # staging by default but you could change to Production if you are not creating a slot
   AZURE_WEB_APP_SLOT: "Production"
   #Make sure you create a secret with the publish profile named exactly as below

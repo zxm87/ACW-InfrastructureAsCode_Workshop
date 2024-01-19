@@ -6,7 +6,7 @@ param webAppName string
 param appInsightsName string
 param identityDBConnectionStringKey string = 'ConnectionStrings:DefaultConnection'
 param managerDBConnectionStringKey string = 'ConnectionStrings:MyContactManager'
-param appInsightsConnectionStringKey string = 'APPINSIGHTS:CONNECTIONSTRING'
+param appInsightsConnectionStringKey string = 'APPLICATIONINSIGHTS_CONNECTION_STRING'
 
 var workerRuntime = 'dotnet'
 var webAppFullName = '${webAppName}-${uniqueIdentifier}'

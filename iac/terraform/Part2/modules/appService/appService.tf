@@ -1,8 +1,3 @@
-data "azurerm_application_insights" "cm_app_insights" {
-  name                = var.appInsightsName
-  resource_group_name = var.resourceGroupName
-}
-
 resource "azurerm_service_plan" "cm_hosting_plan" {
   name                = "${var.appServicePlanName}-${var.uniqueIdentifier}"
   resource_group_name = var.resourceGroupName
@@ -31,7 +26,7 @@ resource "azurerm_windows_web_app" "cm_webapp" {
   app_settings = {    
     "ConnectionStrings:DefaultConnection"   = "@Microsoft.KeyVault(SecretUri=${var.defaultDBSecretURI})"
     "ConnectionStrings:MyContactManager"    = "@Microsoft.KeyVault(SecretUri=${var.managerDBSecretURI})"
-    "APPLICATIONINSIGHTS_CONNECTION_STRING" = data.azurerm_application_insights.cm_app_insights.connection_string
+    "APPLICATIONINSIGHTS_CONNECTION_STRING" = var.appInsightsConnectionString
     "WEBSITE_ENABLE_SYNC_UPDATE_SITE"       = "true"
     "WEBSITE_RUN_FROM_PACKAGE"              = "1"
   }

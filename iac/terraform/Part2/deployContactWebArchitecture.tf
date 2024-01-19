@@ -52,6 +52,7 @@ module "appService" {
   resourceGroupName  = azurerm_resource_group.rg-contact-web-application.name
   location           = azurerm_resource_group.rg-contact-web-application.location
   appInsightsName    = var.appInsightsName
+  appInsightsConnectionString = module.applicationInsights.appInsightsConnectionString
   uniqueIdentifier   = var.uniqueIdentifier
   appServicePlanName = var.appServicePlanName
   webAppName         = var.webAppName

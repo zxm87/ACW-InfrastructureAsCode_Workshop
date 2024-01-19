@@ -13,6 +13,11 @@ variable "appInsightsName" {
     nullable = false
 }
 
+variable "appInsightsConnectionString" {
+    type     = string
+    nullable = false
+}
+
 variable "uniqueIdentifier" {
     type     = string
     nullable = false
